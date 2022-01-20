@@ -7,15 +7,18 @@ function scheduleMeeting(startTime, durationMinutes) {
         const hours = time.substring(0, colonI);
         const minutes = time.substring(colonI+1, time.length);
 
-        // Coercion happening: string to number;
+        // Coercion happening: string to number,
+        // First string uses implicit coercion ( * ), second string needs explicit coercion
         return hours * 60  + Number(minutes);
     }
 
     const start = toSeconds (dayStart);
     const end = toSeconds (dayEnd);
     const meetingStart =  toSeconds(startTime);
+    // Coercion not happening, but variables are of the same type
     const meetingEnd = meetingStart + durationMinutes;
 
+    // Coercion not happening, rules of inequalities apply
     return start <= meetingStart && meetingEnd <= end;
 }
 
