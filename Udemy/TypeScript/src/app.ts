@@ -1,11 +1,14 @@
 import Form from "./components/form.js";
+import ProjectItem from "./components/projectItem.js";
 import UserInput from "./components/userInput.js";
+import ProjectList from "./projectList.js";
+import AppState from "./store/AppState.js";
 class ProjectInput {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   formElement: Form;
 
-  constructor() {
+  constructor(private state: AppState) {
     this.templateElement = document.getElementById(
       "project-input"
     ) as HTMLTemplateElement;
@@ -65,10 +68,20 @@ class ProjectInput {
 
   private submitHandler = (event: Event) => {
     event.preventDefault();
-    const values = this.gatherUserInput();
-    console.log(values);
+    const values = this.gatherUserInput()!;
+    const projectItem = new ProjectItem(
+      values[0].toString(),
+      values[1].toString(),
+      +values[2]
+    );
+    this.state.insertNewProject(projectItem);
     this.formElement.clearForm();
   };
 }
 
-const prjInput = new ProjectInput();
+const state = AppState.getInstance();
+const prjInput = new ProjectInput(state);
+const activePrjList = new ProjectList("active");
+const finishedPrjList = new ProjectList("finished");
+state.addListener(activePrjList.listener);
+state.addListener(finishedPrjList.listener);
