@@ -1,5 +1,5 @@
-import UserInput from "./userInput.js";
-import Validatable from "../interfaces/Validatable.js";
+import UserInput from "./userInput";
+import Validatable from "../interfaces/Validatable";
 
 export default class Form implements Validatable {
   userInputs: UserInput[] = [];

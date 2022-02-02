@@ -1,5 +1,5 @@
-import Project from "./Project.js";
-import ProjectItem from "../components/projectItem.js";
+import Project from "./Project";
+import ProjectItem from "../components/projectItem";
 
 export default interface State {
   activeProjects: Project[];

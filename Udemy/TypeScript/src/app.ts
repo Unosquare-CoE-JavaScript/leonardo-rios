@@ -1,8 +1,8 @@
-import Form from "./components/form.js";
-import ProjectItem from "./components/projectItem.js";
-import UserInput from "./components/userInput.js";
-import ProjectList from "./projectList.js";
-import AppState from "./store/AppState.js";
+import Form from "./components/form";
+import ProjectItem from "./components/projectItem";
+import UserInput from "./components/userInput";
+import ProjectList from "./projectList";
+import AppState from "./store/AppState";
 class ProjectInput {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;

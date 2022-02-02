@@ -1,4 +1,4 @@
-import AppState from "./store/AppState.js";
+import AppState from "./store/AppState";
 import State from "./interfaces/State";
 
 export default class ProjectList {

@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc -w  & lite-server"
+    "start": "webpack-dev-server",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,10 @@
     "lite-server": "^2.6.1",
     "prettier": "^2.5.1",
     "sudo": "^1.0.3",
-    "typescript": "^4.5.5"
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.3"
   }
 }

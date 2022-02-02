@@ -1,4 +1,4 @@
-import Validatable from "../interfaces/Validatable.js";
+import Validatable from "../interfaces/Validatable";
 
 export default class UserInput implements Validatable {
   constructor(

@@ -1,5 +1,5 @@
-import Project from "../interfaces/Project.js";
-import AppState from "../store/AppState.js";
+import Project from "../interfaces/Project";
+import AppState from "../store/AppState";
 export default class ProjectItem implements Project {
   element: HTMLLIElement;
   titleElement: HTMLHeadingElement;
