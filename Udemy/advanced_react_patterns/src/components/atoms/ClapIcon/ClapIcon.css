@@ -1,0 +1,13 @@
+/* Clap Icon */
+.icon {
+	width: 40px;
+	fill: none;
+	stroke: #27ae60;
+	stroke-width: 2px;
+}
+
+.icon.checked {
+	fill: #27ae60;
+	stroke: #fff;
+	stroke-width: 1px;
+}
