@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback, createContext, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, createContext, useMemo, useReducer, useRef } from 'react';
 // @ts-ignore
 import mojs from 'mo-js';
 import "./MediumClap.css";
 
-type Context = {
+export type Context = {
     isClicked?: Boolean,
     count?: Number,
     countTotal?: Number,
@@ -120,22 +120,41 @@ const INITIAL_STATE = {
     isClicked: false
 };
 
-export const useClapState = (initialState = INITIAL_STATE) => {
+const internalReducer = ({ count, countTotal }: Context, action: any) => {
     const MAXIMUM_USER_CLAP = 50;
-    const [clapState, setClapState] = useState(initialState);
-    const updateClapState = () => setClapState(({ count, countTotal }) => ({
-        isClicked: true,
-        count: Math.min(+count + 1, MAXIMUM_USER_CLAP),
-        countTotal: count < MAXIMUM_USER_CLAP ? countTotal + 1 : countTotal
-    }))
+    const type = action.type;
+    switch (type) {
+        case 'clap':
+            return {
+                isClicked: true,
+                count: Math.min(+count! + 1, MAXIMUM_USER_CLAP),
+                countTotal: count! < MAXIMUM_USER_CLAP ? +countTotal! + 1 : countTotal
+            }
+        case 'reset': return action.payload;
+        default: return {}
+    }
+}
+
+export const useClapState = (initialState = INITIAL_STATE, reducer = internalReducer) => {
+    const initialStateRef = useRef(initialState);
+    const [clapState, dispatch] = useReducer(reducer, initialStateRef.current);
+
+    const updateClapState = useCallback(() => {
+        dispatch({ type: 'clap' });
+    }, []);
 
     const resetState = useCallback(() => {
-        setClapState(initialState);
+        dispatch({ type: 'reset', payload: initialStateRef.current });
     }, []);
 
     return { clapState, updateClapState, resetState };
 }
 
+useClapState.reducer = internalReducer;
+useClapState.types = {
+    clap: 'clap',
+    reset: 'reset'
+};
 
 
 export const MediumClapContext: React.Context<Context> = createContext({});
