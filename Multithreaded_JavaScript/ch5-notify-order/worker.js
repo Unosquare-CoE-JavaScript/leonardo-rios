@@ -1,3 +1,4 @@
+// A message listener. This waits for up to a second before wake up.
 self.onmessage = ({data: {buffer, name}}) => {
     const view = new Int32Array(buffer);
     console.log(`Worker ${name} started`);

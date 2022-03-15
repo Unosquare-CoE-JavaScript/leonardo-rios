@@ -1,6 +1,6 @@
 export default class Grid {
     static NEIGHBORS = [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]];
-    
+    // It handles two arrays one for the current state and other for the next state.
     constructor(size, buffer, paint = ()=>{}) {
         const sizeSquared = size * size;
         this.buffer = buffer;
@@ -10,6 +10,7 @@ export default class Grid {
         this.paint = paint;
     }
 
+    // Given a coordinate in a grid, returns the proper value in the array
     getCell(x,y) {
         const size = this.size;
         const sizeM1 = size - 1;
@@ -18,6 +19,7 @@ export default class Grid {
         return this.cells[size * x + y]
     }
 
+    // Iterate through the defined range and makes changes following the game of life rules.
     iterate (minX, minY, maxX, maxY) {
         const size = this.size;
         for (let x = minX; x < maxX; x++) {

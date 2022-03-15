@@ -6,6 +6,8 @@ let cells;
 let sync;
 
 self.onmessage = initListener;
+
+// An initial message listener, it instantiates the views and variables needed in this thread.
 function initListener(msg) {
     const opts = msg.data;
     let sharedMemory = opts.sharedMemory;
@@ -19,7 +21,9 @@ function initListener(msg) {
     runCoord();
 }
 
-
+// A message listener for running the app. It lets all threads know they are ready to operate,
+// the it waits for all of them to finish. Then it updates the colors and notifies the main thread
+// that the new state has been completed
 function runCoord() {
     for (let i=0; i<THREADS; i++) {
         Atomics.store(sync, i, 1);
