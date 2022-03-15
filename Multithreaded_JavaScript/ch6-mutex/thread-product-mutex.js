@@ -7,6 +7,7 @@ const Mutex  = require ('./mutex');
 const assert = require('assert');
 
 if (isMainThread) {
+    // In the main thread, this instantiates 4 workers working with the same memory
     const shared = new SharedArrayBuffer(5*4);
     const sharedInts = new Int32Array(shared);
     sharedInts.set([2,3,5,7,0]);
@@ -14,6 +15,8 @@ if (isMainThread) {
         new Worker(__filename, {workerData: {i, shared }});
     }
 } else {
+    // in child workers threads we try to execue a multiplication using a memory address shared  with other threads
+    // The mutex class will ensure the execution will work as expected
     const { i, shared } = workerData;
     const sharedInts = new Int32Array(shared);
     const mutex = new Mutex(sharedInts, 4);

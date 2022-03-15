@@ -3,6 +3,7 @@ const CORES = require('os').cpus().length;
 const STRATEGIES = new Set(['roundrobin', 'random', 'leastbusy']);
 
 module.exports = class RpcWorkerPool {
+    
     constructor (path, size = 0, strategy = 'roundrobin') {
         if (size === 0) this.size = CORES;
         else if (size<0) this.size = Math.max(CORES + size, 1);
@@ -14,6 +15,8 @@ module.exports = class RpcWorkerPool {
 
         this.next_command_id = 0;
         this.workers = [];
+
+        // Instantiates the workers
         for (let i= 0; i<this.size; i++) {
             const worker = new Worker(path);
             this.workers.push({worker, in_flight_commands: new Map() });
@@ -23,6 +26,7 @@ module.exports = class RpcWorkerPool {
         }
     }
 
+    // A listener for messages sent by the worker. The worker will call this when finish the work
     onMessageHandler (msg, worker_id) {
         const worker = this.workers[worker_id];
         const {result, error, id} = msg;
@@ -32,6 +36,8 @@ module.exports = class RpcWorkerPool {
         else resolve(result);
     }
     
+    // Method that add the method, i.e commando to be executed, to a selected worker.
+    // Return a promise to the user.
     exec (method, ...args) {
         const id = ++this.next_command_id;
         let resolve, reject;
@@ -43,6 +49,7 @@ module.exports = class RpcWorkerPool {
         return promise;
     }
 
+    // Selects a worker from the worker pool according to the strategy defined
     getWorker() {
         let id;
         if(this.strategy === 'random') {
