@@ -1,4 +1,8 @@
+// This class encapsulates a web worker and provides to methods for interaction with it
+
 class RpcWorker {
+
+    // The worker gets instantiated and gets a message listener for external comunication.
     constructor(path) {
         this.next_command_id = 0;
         this.in_flight_commands = new Map();
@@ -6,6 +10,7 @@ class RpcWorker {
         this.worker.onmessage = this.onMessageHandler.bind(this);
     }
 
+    // The listener rejects or resolves the previous returned promise according to the worker msg
     onMessageHandler (msg) {
         const {result, error, id} = msg.data;
         const {resolve, reject} = this.in_flight_commands.get(id)
@@ -14,6 +19,7 @@ class RpcWorker {
         else resolve(result);
     }
 
+    // This method sends the command to execute to the worker. Returns a promise that will be resolved in the worker listener
     exec(method, ...args) {
         const id = ++this.next_command_id;
         let resolve,reject;

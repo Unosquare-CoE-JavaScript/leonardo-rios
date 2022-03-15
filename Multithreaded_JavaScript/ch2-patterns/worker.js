@@ -1,11 +1,13 @@
 const sleep = ms => new Promise (res=> setTimeout(res, ms));
 
+// Worker listener wrapper, the inner executes a callback and send the response back to the main thread 
 function asyncOnMessageWrap(fn) {
     return async function(msg) {
         postMessage(await fn(msg.data));
     }
 }
 
+// Supported commands object
 const commands = {
     async square_sum(max) {
         await sleep(Math.random * 100);
@@ -30,6 +32,7 @@ const commands = {
     }
 }
 
+// Listener is binded to this worker/thread. A callback is provided with the logic for commands execution considering error handling scenarios
 self.onmessage = asyncOnMessageWrap(
     async (rpc) => {
         const {method, params, id} = rpc;
